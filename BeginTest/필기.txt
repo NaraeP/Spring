@@ -1,0 +1,15 @@
+
+
+5. 워크스페이스 지정
+	- C:\class\code\spring
+6. 워크스페이스 설정
+	a. 인코딩
+		- Workspace
+		- CSS
+		- HTML
+		- JSP
+		- Content Types
+	b. 폰트
+	c. Apache Tomcat
+	d. 하단 Servers창에도 톰캣 서버 등록!
+7. http://localhost:8090/spring
