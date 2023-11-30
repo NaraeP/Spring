@@ -5,5 +5,5 @@ select * from tabs;
 
 select * from tblAddress;
 
-
+select * from tblAddress order by seq desc;
 
