@@ -17,7 +17,7 @@ public class AOPController {
 	@GetMapping(value="/list.do")
 	public String list(Model model) {
 		
-		//List<DTO> list = dao.list();
+		//List<DTO> list = dao.list(); //이런 식으로 DB를 접근한다고 가정!
 		
 		dao.list();
 		System.out.println("Controller.list()");
@@ -36,7 +36,6 @@ public class AOPController {
 
 	@GetMapping(value="/view.do")
 	public String view(Model model) {
-		
 		
 		dao.view();
 		System.out.println("Controller.view()");
