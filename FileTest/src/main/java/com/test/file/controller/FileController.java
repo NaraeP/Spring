@@ -1,4 +1,4 @@
-package com.test.file.comtroller;
+package com.test.file.controller;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -155,7 +155,7 @@ public class FileController {
 		PlaceDTO dto = dao.get(seq);
 		
 		//위치 정보가 있을 수도, 없을 수도 있다.
-		PicDTO pdto = dto.getPicList().get(0);
+		PicDTO pdto = dto.getPicList().get(0); //여러 이미지를 올릴 경우 여러 이미지의 위치 정보 출력은 불가하니까 임의로 첫번째 사진의 위치 정보만 출력하도록 설정
 		
 		if (pdto != null) {
 			

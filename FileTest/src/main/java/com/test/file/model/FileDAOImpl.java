@@ -24,6 +24,7 @@ public class FileDAOImpl implements FileDAO {
 		//첨부파일 등록하기
 		for (PicDTO pdto : dto.getPicList()) {
 			
+			//위에서 가져온 게시물 번호 int > String 형변환 과정
 			pdto.setPseq(seq + "");
 			
 			result += template.insert("file.picadd", pdto);
