@@ -196,6 +196,10 @@
 					print('',`[\${message.sender}]님이 들어왔습니다.`, 'other', 'state', message.regdate);
 				} else if (message.code == '2') {
 					print('',`[\${message.sender}]님이 나갔습니다.`, 'other', 'state', message.regdate);
+				} else if (message.code == '3') { //남이 나한테 보낸것을 화면에 출력하기
+					print(message.sender, message.content, 'other', 'msg', message.regdate);
+				} else if (message.code == '4') { //남이 나한테 보낸것을 화면에 출력하기
+					printEmoticon(message.sender, message.content, 'other', 'msg', message.regdate);
 				}
 				
 			}
@@ -223,7 +227,36 @@
 			
 			$('#list').append(temp);
 			
+			//새로운 내용 추가 + 스크롤을 바닥으로 내림
+			scrollList();
+			
 		}
+		
+		
+		//이모티콘 출력
+		function printEmoticon(name, msg, side, state, time) {
+			
+			let temp = `
+			
+			<div class="item \${state} \${side}">
+				<div>
+					<div>\${name}</div>
+					<div style="background-color: #FFF; border: 0;"><img src="/socket/resources/emoticon/\${msg}.png"></div>
+				</div>
+				<div>\${time}</div>
+			</div>
+			
+			`;
+			
+			
+			$('#list').append(temp);
+			
+			//이모티콘이 추가된 후 + 스크롤을 바닥으로 내림
+			setTimeout(scrollList, 100);
+			
+		}
+		
+		
 		
 		//창이 닫히기 바로 직전 발생
 		$(window).on('beforeunload', function() {
@@ -242,6 +275,51 @@
 			};
 			
 			ws.send(JSON.stringify(message));
+		}
+		
+		$('#msg').keydown(function(evt) {
+			
+			if (evt.keyCode == 13) {
+				
+				//입력한 대화 내용을 서버로 전달
+				//ws.send('전달 내용'); > 이렇게 막무가내로 전달하면 서버가 어떤 내용인지 구분하지 못한다.
+				//따라서 아래와 같이 object 틀에 맞춰서 전달한다.
+				let message = {
+						code: '3',
+						sender: window.name,
+						receiver: '',
+						content: $('#msg').val(),
+						regdate: new Date().toLocaleString()
+				};
+				
+				//일반대화 vs 이모티콘인지 구분하여 서버로 전달하는 과정
+				if ($('#msg').val().startsWith('/')) {
+					//대화(X) > 이모티콘(O)
+					message.code = '4';
+					//alert(message.content);
+				}
+				
+				
+				//객체를 보낼수는 없으므로 주고 받기 쉬운 JSON 형태의 format으로 변경하여 전달
+				ws.send(JSON.stringify(message));
+				
+				//다시 대화를 입력해야하니까 초기화 시키고 focus 잡아주기
+				$('#msg').val('').focus();
+				
+				//CSS 적용을 위해 'me', 'msg'등이 붙은 것!(쌤이 기존에 만드신 CSS 적용)
+				if (message.code == '3') {
+					print(window.name, message.content, 'me', 'msg', message.regdate);
+				} else if (message.code == '4') {
+					printEmoticon(window.name, message.content, 'me', 'msg', message.regdate);
+				}
+				
+			}
+			
+		});
+		
+		function scrollList() {
+			$('#list').scrollTop($('#list').outerHeight() + 300);
+			//큰 값을 주면 움직이긴 하나, 대화의 길이가 길어지면 해당 값 이후로는 스크롤바가 움직이지 않으므로 절대값이 아닌 상대값을 준다. > 대화창의 높이를 가져온다.
 		}
 	
 	</script>

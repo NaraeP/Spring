@@ -7,3 +7,5 @@ select * from tblAddress;
 
 select * from tblAddress order by seq desc;
 
+create user dd identified by pass;
+grant connect, resource, dba to dd;
