@@ -28,7 +28,8 @@
 		<security:form-login login-page="/auth/mylogin.do" authentication-success-handler-ref="customLoginSuccess"/>
 		
 		<!-- 로그아웃 처리 -->
-		<security:logout logout-url="/auth/mylogout.do" logout-success-url="/index.do" invalidate-session="true"/>
+		<!-- <security:logout logout-url="/auth/mylogout.do" logout-success-url="/index.do" invalidate-session="true"/> -->
+		<security:logout/>
 		
 		
 		<!-- 403 페이지 처리 -->
