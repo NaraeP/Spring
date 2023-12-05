@@ -8,6 +8,11 @@
 	<!-- bean 생성 > 로그인 성공 후 처리하는 담당자-->
 	<bean id="customLoginSuccess" class="com.test.security.CustomLoginSuccessHandler"></bean>
 
+	<!-- 암호 인코딩 객체 -->
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	
+	<!-- 사용자 로그인 객체 -->
+	<bean id="customUserDetailsService" class="com.test.security.CustomUserDetailsService"></bean>
 
 	<!-- 폼 로그인 방식으로 보안을 구성하겠습니다. -->
 	<security:http>
@@ -28,8 +33,7 @@
 		<security:form-login login-page="/auth/mylogin.do" authentication-success-handler-ref="customLoginSuccess"/>
 		
 		<!-- 로그아웃 처리 -->
-		<!-- <security:logout logout-url="/auth/mylogout.do" logout-success-url="/index.do" invalidate-session="true"/> -->
-		<security:logout/>
+		<security:logout logout-url="/auth/mylogout.do" logout-success-url="/index.do" invalidate-session="true"/>
 		
 		
 		<!-- 403 페이지 처리 -->
@@ -38,6 +42,8 @@
 	</security:http>
 	
 	<!-- 계정 관리 매니저(회원 아이디/비번/권한등급 등을 관리하는) -->
+	<!-- 원래는 DB랑 연동하는데 임시로 계정 생성하여 위의 로그인 페이지 관련을 테스트 했을 뿐! -->
+	<!-- 
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service>
@@ -46,5 +52,11 @@
 			</security:user-service>		
 		</security:authentication-provider>
 	</security:authentication-manager>
+	 -->
+	 <security:authentication-manager>
+	 	<security:authentication-provider user-service-ref="customUserDetailsService">
+	 		<security:password-encoder ref="bcryptPasswordEncoder"/>
+	 	</security:authentication-provider>
+	 </security:authentication-manager>
 
 </beans>

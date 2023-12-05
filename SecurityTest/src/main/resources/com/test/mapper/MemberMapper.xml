@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace == 호출할 Interface 이름 적기 -->
+<mapper namespace="com.test.mapper.MemberMapper">
+
+	<!-- id == 인터페이스의 추상메서드의 이름 -->
+	<insert id="add" parameterType="com.test.domain.MemberDTO">
+		insert into tblMember (userid, userpw, username)
+			values (#{userid}, #{userpw}, #{username})
+	</insert>
+	
+	<insert id="addAuth" parameterType="com.test.domain.AuthDTO">
+		insert into tblAuth (userid, auth)
+			values (#{userid}, #{auth})
+	</insert>
+	
+	<resultMap type="com.test.domain.MemberDTO" id="memberMap">
+		<id property="userid" column="userid"/> <!-- PK 컬럼 --> <!-- Mapping 정보 > column: select한 컬럼, property: dto의 setter명 -->
+		<result property="userpw" column="userpw"/>
+		<result property="username" column="username"/>
+		<result property="enabled" column="enabled"/>
+		<result property="regdate" column="regdate"/>
+		<collection property="authlist" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<resultMap type="com.test.domain.AuthDTO" id="authMap">
+		<!-- PK가 없으므로 result로만 매핑 -->
+		<result property="userid" column="userid"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	
+	
+	<!-- select의 결과 값으로 membermap을 돌려줄거다. 근데 membermap > memberDTO -->
+	<select id="read" parameterType="String" resultMap="memberMap">
+		select 
+		    m.userid,
+		    m.userpw,
+		    m.username,
+		    m.enabled,
+		    m.regdate,
+		    a.auth
+		from tblmember m
+		left outer join tblauth a
+		on m.userid = a.userid
+		where m.userid = #{userid}
+	</select>
+
+</mapper>
