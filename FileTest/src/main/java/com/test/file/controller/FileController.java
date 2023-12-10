@@ -162,7 +162,7 @@ public class FileController {
 			//사진 파일 접근
 			File file = new File(req.getRealPath("/resources/files/" + pdto.getFilename()));
 			
-try {
+			try {
 				
 				Metadata metadata = ImageMetadataReader.readMetadata(file);
 				
