@@ -116,3 +116,6 @@ insert into tblBook (seq, title, link, description, image, author, discount, pub
 
 commit;
 
+select * from tblBook order by seq desc;
+
+delete from tblBook where seq = 101;
